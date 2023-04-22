@@ -1,5 +1,5 @@
 class Student
-  attr_accessor :id, :name, :lastName, :midleName, :phone, :telegram, :email, :git
+  attr_reader :id, :name, :lastName, :midleName, :phone, :telegram, :email, :git
   #валидатор телефона
   def self.valid_phone?(phone)
     phone.match(/\A\+?\d{11}\z/)
@@ -29,6 +29,20 @@ class Student
     self.email = email
     self.git = git
   end
+  def to_s
+    "id: #{@id}, lastname: #{@lastName}, Name: #{@name}, midlename: #{@midleName}, phone: #{@phone}, @telegram #{@telegram}, email #{@email}, git: #{@git}\n"
+  end
+
+  def set_contacts (phone: nil, telegram:nil,  email:nil)
+    self.email = email if(email!=nil)
+    self.telegram = telegram if(telegram!=nil)
+    self.phone = phone if(phone!=nil)
+  end
+  private
+  attr_writer :id, :name, :lastName, :midleName, :git
+
+
+
   def validate_git_exist
     if self.git then
       true
@@ -47,19 +61,29 @@ class Student
       true
     else false end
   end
-  def set_contacts (phone: nil, telegram:nil,  email:nil)
-    self.email = email if(email!=nil)
-    self.telegram = telegram if(telegram!=nil)
-    self.phone = phone if(phone!=nil)
+
+
+  def phone= (phone)
+    raise ArgumentError, "Задан неверный формат номера" if !phone.nil? and !Student.valid_phone?(phone)
+    @phone = phone
   end
-  def to_s
-    "id: #{@id}, lastname: #{@lastName}, Name: #{@name}, midlename: #{@midleName}, phone: #{@phone}, @telegram #{@telegram}, email #{@email}, git: #{@git}\n"
+
+  def email=(email)
+
+    raise ArgumentError, "Задана неверная почта" if !email.nil? and !Student.valid_email?(email)
+    @email = email
+
+  end
+
+  def telegram=(telegram)
+    raise ArgumentError, "Задан неверный аккаунт" if !telegram.nil? and !Student.valid_account?(telegram)
+    @telegram = telegram
   end
 end
 
 stud = Student.new(lastName: "Левин",name: "Валентин",midleName: "Александрович",phone: "+71234567890",email:"levinvalentin2079@gmail.com")
 print stud.to_s
-stud.set_contacts(phone: "+71234567890",telegram: "tme/petrnik",email: "rom.pet@mail.ru")
+stud.set_contacts(phone: "+71234567890",telegram: "@levval",email: "levinvalentin2079@gmail.com")
 print stud.to_s
 
 
