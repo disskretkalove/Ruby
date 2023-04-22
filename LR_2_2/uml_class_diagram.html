@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagram</title>
+</head>
+<body>
+  <script src="https://unpkg.com/graphre/dist/graphre.js"></script>
+  <script src="https://unpkg.com/nomnoml/dist/nomnoml.js"></script>
+
+  <canvas id="target-canvas"></canvas>
+  <script>
+      var canvas = document.getElementById('target-canvas');
+      var source = `#direction: right
+#zoom: 0.9
+
+#font: Roboto
+#fontSize: 20
+#leading: 2
+#padding: 12
+
+#fillArrows: true
+#arrowSize: 0.5
+#spacing: 130
+
+#lineWidth: 1.5
+#stroke: #33322E
+
+#.class: fill=#FEDCC4 title=bold
+#.module: fill=#D9E6FF title=bold
+[<class> Student |
+   |
+  +initialize(lastName, name, midleName, id, phone, telegram, email, git); +to_s; +short_name; +contact; +set_contacts(phone, telegram, email); +getInfo |
+  
+]
+[<class> StudentShort |
+  @git; @contact |
+  +initialize(id, name_string, git, contact); +to_s; +getInfo |
+  
+]
+[<class> Person |
+  @id; @last_name; @name; @midle_name |
+  +initialize(id, last_name, name, midle_name); +short_name; +to_s |
+  
+]
+[Student] inherits <:- [Person]
+[StudentShort] inherits <:- [Person]
+`;
+      nomnoml.draw(canvas, source);
+  </script>
+</body>
+</html>
