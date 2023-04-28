@@ -1,5 +1,6 @@
 require_relative 'Student_short.rb'
-
+require 'json'
+require_relative 'Person.rb'
 class Student < Person
   attr_reader :id, :name, :lastName, :midleName, :phone, :telegram, :email, :git
 
@@ -12,6 +13,20 @@ class Student < Person
     self.git = git
   end
 
+  def self.pars_str(str)
+    args = JSON.parse(str)
+    raise ArgumentError,"The argument must have last_name, first_name and paternal_name" unless
+      (args.has_key?('last_name') and args.has_key?('first_name') and args.has_key?('paternal_name'))
+
+    new(lastName: args['last_name'],
+        name: args['first_name'],
+        midleName: args['paternal_name'],
+        id: args['id'],
+        phone: args['phone'],
+        git: args['git'],
+        telegram: args['telegram'],
+        email: args['email'])
+  end
   def to_s
     result = super
     result += " phone=#{phone}" unless phone.nil?
@@ -52,27 +67,7 @@ class Student < Person
   attr_writer :id, :name, :lastName, :midleName, :git
 end
 
-class StudentShort < Person
-  attr_reader :git, :contact
 
-  def initialize(id, name_string, git: nil, contact: nil)
-    last_name, name, midle_name = name_string.split(" ")
-    super(id, last_name, name, midle_name)
-    @git = git
-    @contact = contact
-  end
-
-  def to_s
-    result = super
-    result += " git=#{git}" unless git.nil?
-    result += " contact=#{contact}" unless contact.nil?
-    result
-  end
-
-  def getInfo
-    "#{short_name}, #{contact}"
-  end
-end
 
 
 
