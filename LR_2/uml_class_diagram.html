@@ -45,23 +45,29 @@
   +initialize(id, initials, git, contact); +to_s; +getInfo |
   self.from_str(id, str); self.from_student(student)
 ]
-[<class> DataList |
+[<class> StudentListBase |
    |
-  +initialize(objects); +select(number); +get_selected; +get_names; +get_data; +table_fields(object) |
+  +initialize(data_type); +read_from_file(file_path); +write_to_file(file_path); +student_by_id(student_id); +get_k_n_student_short_list(page, count, current_data_list); +sorted; +add_student(student); +replace_student(student_id, student); +remove_student(student_id); +student_count; +student_by_name(student_name); -update_cur_id |
   
 ]
-[<class> DataListStudentShort |
+[<class> StudentListJSON |
    |
-  +get_names; +get_data; #table_fields(object) |
+  #str_to_list(str); #list_to_str(list) |
   
 ]
-[<class> DataTable |
+[<class> StudentListStrategy |
    |
-  +initialize(table); +get_element(str, col); +to_s |
+  #str_to_list(str); #list_to_str(list) |
+  
+]
+[<class> StudentListYAML |
+   |
+  #str_to_list(str); #list_to_str(list) |
   
 ]
 [Student] inherits <:- [Person]
-[DataListStudentShort] inherits <:- [DataList]
+[StudentListJSON] inherits <:- [StudentListStrategy]
+[StudentListYAML] inherits <:- [StudentListStrategy]
 `;
       nomnoml.draw(canvas, source);
   </script>
